@@ -50,15 +50,15 @@ const Dashboard = () => {
   const classes = useStyles();
 
   // CTX store
-  const [ chats, dispatch ] = useContext(CTX)
+  const { chats, sendChatAction, user } = useContext(CTX)
   const topics = Object.keys(chats)
 
   // local state
-  const [value, setValue] = useState('');
+  const [textValue, setTextValue] = useState('');
   const [activeTopic, setActiveTopic] = useState(topics[0]);
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setTextValue(event.target.value);
   };
 
 
@@ -105,15 +105,21 @@ const Dashboard = () => {
           label="Message"
           multiline
           rowsMax={4}
-          value={value}
+          value={textValue}
           onChange={handleChange}
         />
           </div>
-          <div className={classes.button}>
-            <Button variant="contained" color="primary">
-              Send
-            </Button>
-          </div>
+          <Button 
+          className={classes.button}
+          variant="contained" 
+          color="primary"
+          onClick={()=> {
+            sendChatAction({ from: user, message: textValue, topic: activeTopic });
+            setTextValue('');
+          }}
+          >
+            Send
+          </Button>
         </div>
       </Paper>
     </div>
