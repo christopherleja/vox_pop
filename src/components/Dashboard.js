@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +9,7 @@ import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import { CTX } from './contexts/Store'
 
 
 const useStyles = makeStyles(theme => ({
@@ -48,7 +49,13 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles();
 
+  // CTX store
+  const [ chats, dispatch ] = useContext(CTX)
+  const topics = Object.keys(chats)
+
+  // local state
   const [value, setValue] = useState('');
+  const [activeTopic, setActiveTopic] = useState(topics[0]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -62,14 +69,14 @@ const Dashboard = () => {
           Vox Pop
         </Typography>
         <Typography component="h5"> 
-          Topic Placeholder
+          {activeTopic}
         </Typography>
         <div className={classes.flex}>
           <div className={classes.topicsWindow}>
             <List component="nav" aria-label="main mailbox folders">
-              {["topic 1", "topic 2"].map(topic => {
+              {topics.map(topic => {
                 return (
-                <ListItem key={topic} button>
+                <ListItem key={topic} button onClick={() => setActiveTopic(topic)}>
                   <ListItemText>
                     {topic}
                   </ListItemText>
@@ -80,11 +87,11 @@ const Dashboard = () => {
           </div>
           <div className={classes.chatWindow}>
             <List component="nav" aria-label="main mailbox folders">
-                {[{from: 'user', message: 'hello'}, {from: 'user2', message: 'hello 2'}].map((chat, index) => {
+                {chats[activeTopic].map((chat, index) => {
                   return (
                   <div className={classes.flex} key={index}>
                     <Chip label={chat.from} className={classes.chip}/>
-                    <Typography variant='p'>{chat.message}</Typography>
+                    <Typography variant='body1'>{chat.message}</Typography>
                   </div>
                   )
                 })}
