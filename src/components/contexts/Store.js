@@ -22,16 +22,23 @@ const initialState = {
 }
 
 const reducer = (state, action) => {
-  const { topic, from, message } = action.payload
+  const { topic, from, message } = action.payload;
   switch(action.type){
-    case 'RECIEVE_MESSAGE':
-      return {
+    case "RECIEVE_MESSAGE":
+      console.log({
         ...state, 
         [topic]: [
           ...state[topic],
           { from, message }
         ]
-      }
+      })
+      return ({
+        ...state, 
+        [topic]: [
+          ...state[topic],
+          { from, message }
+        ]
+      })
     default:
       return state;
   }
@@ -47,12 +54,17 @@ const sendChatAction = value => {
 const user = 'bill_cinammon' + Math.random(100).toFixed(2)
 
 const Store = (props) => {
-
-  if (!socket){
-    socket = io(':3001')
-  }
   
   const [chats, dispatch] = useReducer(reducer, initialState)
+  
+  if (!socket){
+    socket = io(':3001')
+    socket.on('chat message', msg => {
+      console.log("emitting", msg)
+      dispatch({ type: "RECIEVE_MESSAGE", payload: msg })
+    })
+  }
+  
   
   return (
     <CTX.Provider value={{chats, sendChatAction, user}}>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -57,6 +57,10 @@ const Dashboard = () => {
   const [textValue, setTextValue] = useState('');
   const [activeTopic, setActiveTopic] = useState(topics[0]);
 
+  useEffect(() => {
+
+  }, [chats[activeTopic]])
+
   const handleChange = (event) => {
     setTextValue(event.target.value);
   };
@@ -87,7 +91,7 @@ const Dashboard = () => {
           </div>
           <div className={classes.chatWindow}>
             <List component="nav" aria-label="main mailbox folders">
-                {chats[activeTopic].map((chat, index) => {
+                { chats[activeTopic].map((chat, index) => {
                   return (
                   <div className={classes.flex} key={index}>
                     <Chip label={chat.from} className={classes.chip}/>
@@ -115,6 +119,7 @@ const Dashboard = () => {
           color="primary"
           onClick={()=> {
             sendChatAction({ from: user, message: textValue, topic: activeTopic });
+            // console.log("immediately after sending", chats[activeTopic])
             setTextValue('');
           }}
           >
