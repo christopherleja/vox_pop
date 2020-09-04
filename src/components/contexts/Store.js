@@ -51,7 +51,7 @@ const sendChatAction = value => {
   socket.emit('chat message', value)
 }
 
-const user = 'bill_cinammon' + Math.random(100).toFixed(2)
+const user = 'blt' + Math.random(100).toFixed(2)
 
 const Store = (props) => {
   
@@ -60,7 +60,6 @@ const Store = (props) => {
   if (!socket){
     socket = io(':3001')
     socket.on('chat message', msg => {
-      console.log("emitting", msg)
       dispatch({ type: "RECIEVE_MESSAGE", payload: msg })
     })
   }

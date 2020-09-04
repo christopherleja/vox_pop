@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
   chip: {
     width: "10%",
     margin: '.2rem .6rem'
+  },
+  container: {
+    textAlign: 'center'
   }
 
 }))
@@ -67,7 +70,7 @@ const Dashboard = () => {
 
 
   return (
-    <div>
+    <div className={classes.container}>
       <Paper className={classes.root}>
         <Typography variant="h4" component="h3">
           Vox Pop
@@ -119,7 +122,6 @@ const Dashboard = () => {
           color="primary"
           onClick={()=> {
             sendChatAction({ from: user, message: textValue, topic: activeTopic });
-            // console.log("immediately after sending", chats[activeTopic])
             setTextValue('');
           }}
           >
